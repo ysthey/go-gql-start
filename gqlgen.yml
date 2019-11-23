@@ -6,15 +6,15 @@ schema:
   - internal/gql/schemas/schema.graphql
 # Let gqlgen know where to put the generated server
 exec:
-  filename: internal/gql/generated/exec.go
+  filename: internal/gql/exec-gen.go
   package: gql
 # Let gqlgen know where to put the generated models (if any)
 model:
-  filename: internal/gql/generated/models/models.go
+  filename: internal/gql/models/models-gen.go
   package: models
 # Let gqlgen know where to put the generated resolvers
 resolver:
-  filename: internal/gql/generated/resolvers/resolvers.go
+  filename: internal/gql/resolvers/generated/resolvers-gen.go
   type: Resolver
   package: resolvers
 autobind: []
