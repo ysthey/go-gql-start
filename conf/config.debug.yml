@@ -4,3 +4,8 @@ gin-mode: debug
 gql-path: /gql
 gql-playground-path: /playground
 gql-playground-enabled: true
+gorm-dialect: sqlite3
+gorm-conn-dsn: test.db
+gorm-seed-db: true
+gorm-log-mode: true
+gorm-auto-migrate: true

@@ -2,11 +2,14 @@ package resolvers
 
 import (
 	"github.com/ysthey/go-gql-start/internal/gql"
+	"github.com/ysthey/go-gql-start/internal/orm"
 )
 
 // THIS CODE IS A STARTING POINT ONLY. IT WILL NOT BE UPDATED WITH SCHEMA CHANGES.
 
-type Resolver struct{}
+type Resolver struct {
+	ORM *orm.ORM
+}
 
 func (r *Resolver) Mutation() gql.MutationResolver {
 	return &mutationResolver{r}

@@ -3,11 +3,15 @@
 package models
 
 type User struct {
-	ID    string `json:"id"`
 	Email string `json:"email"`
 	UUID  string `json:"UUID"`
 }
 
 type UserInput struct {
 	Email string `json:"email"`
+}
+
+type Users struct {
+	Count *int    `json:"count"`
+	List  []*User `json:"list"`
 }

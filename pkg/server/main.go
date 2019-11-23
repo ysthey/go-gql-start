@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/ysthey/go-gql-start/internal/handlers"
+	"github.com/ysthey/go-gql-start/internal/orm"
 	"github.com/ysthey/go-gql-start/pkg/config"
 )
 
@@ -20,7 +21,7 @@ func init() {
 }
 
 // Run web server
-func Run() {
+func Run(orm *orm.ORM) {
 	endpoint := "http://" + host + ":" + port
 
 	r := gin.Default()
@@ -35,7 +36,9 @@ func Run() {
 		r.GET(gqlPgPath, handlers.PlaygroundHandler(gqlPath))
 		log.Println("GraphQL Playground @ " + endpoint + gqlPgPath)
 	}
-	r.POST(gqlPath, handlers.GraphqlHandler())
+
+	// pass orm to graphqlHandler
+	r.POST(gqlPath, handlers.GraphqlHandler(orm))
 	log.Println("GraphQL @ " + endpoint + gqlPath)
 
 	// Run the server
