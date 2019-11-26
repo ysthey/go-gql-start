@@ -12,6 +12,10 @@ Quick way to create / run Graphql server dev environment with Golang.
         gopkg.in/gormigrate.v1
 
 ## Usage:
+0. To change package name
+
+        $ grep -rl "github.com/ysthey/go-gql-start" ./* | xargs sed -i 's/github\.com\/ysthey\/go-gql-start/newgitrepo\.com\/newpath\/newpackage/g'
+
 1. Configuration files are ".env" and "./conf/*.yml"
 
 2. To build:
