@@ -1,29 +1,33 @@
 # Types
 type User {
   email: String!
-  UUID: String!
+  uuid: String!
+  firstname: String
+  lastname: String
 }
 
 # Input Types
 input UserInput {
-  email: String!
+  email: String
+  firstname: String
+  lastname: String
 }
 
 # List Types
 type Users {
-  count: Int # You want to return count for a grid for example
+  count: Int! # You want to return count for a grid for example
   list: [User!]! # that is why we need to specify the users object this way
 }
 
 
 # Define mutations here
 type Mutation {
-  createUser(input: UserInput!): User!
-  updateUser(UUID: String!, input: UserInput!): User!
-  deleteUser(UUID: String!): Boolean!
+  createUser(user: UserInput!): User!
+  updateUser(uuid: String!, user: UserInput!): User!
+  deleteUser(uuid: String!): Boolean!
 }
 
 # Define queries here
 type Query {
-  users(UUID: String): Users!
+  users(uuid: String): Users!
 }

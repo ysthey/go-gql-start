@@ -7,9 +7,13 @@ import (
 )
 
 var (
+	fname     string       = "test"
+	lname     string       = "test"
 	firstUser *models.User = &models.User{
-		Email: "test@test.com",
-		UUID:  "97e3e85e-6ad6-425c-b70b-2eb1275d8d1e",
+		Email:     "test@test.com",
+		UUID:      "97e3e85e-6ad6-425c-b70b-2eb1275d8d1e",
+		Firstname: &fname,
+		Lastname:  &lname,
 	}
 )
 

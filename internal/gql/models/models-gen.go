@@ -3,15 +3,19 @@
 package models
 
 type User struct {
-	Email string `json:"email"`
-	UUID  string `json:"UUID"`
+	Email     string  `json:"email"`
+	UUID      string  `json:"uuid"`
+	Firstname *string `json:"firstname"`
+	Lastname  *string `json:"lastname"`
 }
 
 type UserInput struct {
-	Email string `json:"email"`
+	Email     *string `json:"email"`
+	Firstname *string `json:"firstname"`
+	Lastname  *string `json:"lastname"`
 }
 
 type Users struct {
-	Count *int    `json:"count"`
+	Count int     `json:"count"`
 	List  []*User `json:"list"`
 }

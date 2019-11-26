@@ -10,6 +10,10 @@ import (
 
 func init() {
 	env := os.Getenv("APP_ENV")
+	if env == "UNITTEST" {
+		return
+	}
+
 	conf := "config"
 	if env != "" {
 		conf += "." + env

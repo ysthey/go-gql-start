@@ -2,46 +2,45 @@ package resolvers
 
 import (
 	"context"
+	"errors"
 
+	"log"
+
+	"github.com/jinzhu/gorm"
 	"github.com/ysthey/go-gql-start/internal/gql/models"
 	tf "github.com/ysthey/go-gql-start/internal/gql/resolvers/transformations"
 	dbm "github.com/ysthey/go-gql-start/internal/orm/models"
-	"log"
 )
 
-// CreateUser creates a record
-func (r *mutationResolver) CreateUser(ctx context.Context, input models.UserInput) (*models.User, error) {
-	return userCreateUpdate(r, input, false)
+func (r *mutationResolver) CreateUser(ctx context.Context, user models.UserInput) (*models.User, error) {
+	return userCreateUpdate(r.ORM.DB, user, false)
 }
 
-// UpdateUser updates a record
-func (r *mutationResolver) UpdateUser(ctx context.Context, uuid string, input models.UserInput) (*models.User, error) {
-	return userCreateUpdate(r, input, true, uuid)
+func (r *mutationResolver) UpdateUser(ctx context.Context, uuid string, user models.UserInput) (*models.User, error) {
+	return userCreateUpdate(r.ORM.DB, user, true, uuid)
 }
 
-// DeleteUser deletes a record
 func (r *mutationResolver) DeleteUser(ctx context.Context, uuid string) (bool, error) {
-	return userDelete(r, uuid)
+	return userDelete(r.ORM.DB, uuid)
 }
 
-// Users lists records
 func (r *queryResolver) Users(ctx context.Context, uuid *string) (*models.Users, error) {
-	return userList(r, uuid)
+	return userList(r.ORM.DB, uuid)
 }
 
 // ## Helper functions
 
-func userCreateUpdate(r *mutationResolver, input models.UserInput, update bool, ids ...string) (*models.User, error) {
-	dbo, err := tf.GQLInputUserToDBUser(&input, update, ids...)
+func userCreateUpdate(gdb *gorm.DB, user models.UserInput, update bool, ids ...string) (*models.User, error) {
+	dbo, err := tf.GQLInputUserToDBUser(&user, update, ids...)
 	if err != nil {
 		return nil, err
 	}
 	// Create scoped clean db interface
-	db := r.ORM.DB.New().Begin()
+	db := gdb.New().Begin()
 	if !update {
 		db = db.Create(dbo).First(dbo) // Create the user
 	} else {
-		db = db.Model(&dbo).Update(dbo).First(dbo) // Or update it
+		db = db.Model(&dbo).Where("uuid=?", ids[0]).Update(dbo).First(dbo) // Or update it
 	}
 	gql, err := tf.DBUserToGQLUser(dbo)
 	if err != nil {
@@ -52,16 +51,30 @@ func userCreateUpdate(r *mutationResolver, input models.UserInput, update bool, 
 	return gql, db.Error
 }
 
-func userDelete(r *mutationResolver, uuid string) (bool, error) {
-	return false, nil
+func userDelete(gdb *gorm.DB, uuid string) (bool, error) {
+	db := gdb.New()
+	wtm := &models.User{}
+	db = db.Where("uuid= ?", uuid).First(wtm)
+	rerr := db.RecordNotFound()
+	if rerr {
+		log.Println("error while deleting", uuid, "user record not found")
+		return false, errors.New("user record not found")
+	}
+	err := db.Delete(wtm).Error
+	if err != nil {
+		log.Println("error while deleting", uuid, err)
+		return false, err
+	}
+
+	return true, nil
 }
 
-func userList(r *queryResolver, uuid *string) (*models.Users, error) {
+func userList(gdb *gorm.DB, uuid *string) (*models.Users, error) {
 	entity := "users"
 	whereID := "uuid = ?"
 	record := &models.Users{}
 	dbRecords := []*dbm.User{}
-	db := r.ORM.DB.New()
+	db := gdb.New()
 	if uuid != nil {
 		db = db.Where(whereID, *uuid)
 	}
