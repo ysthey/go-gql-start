@@ -34,7 +34,7 @@ sh:
 	docker run -u ${APPUSER} --network=host --rm -it -v "`pwd`:/app" -w /app ${IMG_TAG} sh
 
 prod:
-	docker run -u ${APPUSER} --rm -it -v "`pwd`:/app" -w /app ${IMG_TAG} sh -c "ng build"
+	docker run -u ${APPUSER} --rm -it -v "`pwd`:/app" -w /app ${IMG_TAG} sh -c "ng build --prod"
 
 clean:
 	git clean -fxd

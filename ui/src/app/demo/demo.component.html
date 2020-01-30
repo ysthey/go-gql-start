@@ -1,0 +1,12 @@
+<h1>Demo</h1>
+<h4>Users ({{ count }})</h4>
+
+<table *ngIf="users">
+    <tr *ngFor="let u of users">
+        <td>{{u.uuid}}</td>
+        <td>{{u.firstname}}</td>
+        <td>{{u.lastname}}</td>
+        <td>{{u.email}}</td>
+    </tr>
+
+  </table>
