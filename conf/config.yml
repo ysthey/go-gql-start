@@ -1,6 +1,12 @@
-server-host: localhost
-server-port: 8080
+server-host: 0.0.0.0
+server-port: 80
+server-static-dir: ./static
 gin-mode: release
 gql-path: /gql
 gql-playground-path: /playground
 gql-playground-enabled: false
+gorm-dialect: sqlite3
+gorm-conn-dsn: sqlite3.db
+gorm-seed-db: false
+gorm-log-mode: false
+gorm-auto-migrate: true

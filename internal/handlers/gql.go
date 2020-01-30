@@ -1,8 +1,12 @@
 package handlers
 
 import (
+	"net/http"
+	"time"
+
 	"github.com/99designs/gqlgen/handler"
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
 	"github.com/ysthey/go-gql-start/internal/gql"
 	"github.com/ysthey/go-gql-start/internal/gql/resolvers"
 	"github.com/ysthey/go-gql-start/internal/orm"
@@ -17,7 +21,14 @@ func GraphqlHandler(orm *orm.ORM) gin.HandlerFunc {
 		},
 	}
 
-	h := handler.GraphQL(gql.NewExecutableSchema(c))
+	h := handler.GraphQL(gql.NewExecutableSchema(c),
+		handler.WebsocketUpgrader(websocket.Upgrader{
+			CheckOrigin: func(r *http.Request) bool {
+				return true
+			},
+		}),
+		handler.WebsocketKeepAliveDuration(10*time.Second),
+	)
 
 	return func(c *gin.Context) {
 		h.ServeHTTP(c.Writer, c.Request)
