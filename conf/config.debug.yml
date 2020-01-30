@@ -1,6 +1,6 @@
 server-host: 0.0.0.0
 server-port: 8080
-server-static-dir: ./static
+server-static-dir: ./ui/dist/client
 gin-mode: debug
 gql-path: /gql
 gql-playground-path: /playground

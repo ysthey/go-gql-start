@@ -15,5 +15,8 @@ ls -lah $output | awk '{print $5}'
 printf "\npopulate config file"
 cp  ./conf/$cfgFile $outputPath
 printf "\nclient files"
-cp -r ./ui $outputPath/static
+cd ui && make prod && cd ..
+
+rm -rf $outputPath/static
+cp -r ./ui/dist/client $outputPath/static
 printf "\nDone building: $app\n\n"
