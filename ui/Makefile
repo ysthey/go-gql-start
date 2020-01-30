@@ -22,7 +22,7 @@ npm-install: image
 	docker run -u ${APPUSER} --network=host --rm -it -v "`pwd`:/app" -w /app ${IMG_TAG} sh -c "npm install"
 
 serve:
-	docker run -u ${APPUSER} --rm -d --name=${CONTAINER} -v "`pwd`:/app" -w /app -p 4200:4200 ${IMG_TAG} sh -c "ng serve --host 0.0.0.0 --port 4200"
+	docker run -u ${APPUSER} --network=host --rm -d --name=${CONTAINER} -v "`pwd`:/app" -w /app ${IMG_TAG} sh -c "ng serve --host 0.0.0.0 --port 4200"
 
 stop-serve:
 	docker container stop ${CONTAINER}
