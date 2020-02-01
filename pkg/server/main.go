@@ -48,8 +48,12 @@ func Run(orm *orm.ORM) {
 	})
 
 	// Handlers
-	// Simple keep-alive/ping handler
-	r.GET("/ping", handlers.Ping())
+	g := r.Group("/api")
+	{
+		// Simple keep-alive/ping handler
+		g.GET("/ping", handlers.Ping())
+		g.POST("/ping", handlers.Ping())
+	}
 
 	// GraphQL handlers
 	// Playground handler
