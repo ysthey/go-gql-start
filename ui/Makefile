@@ -36,5 +36,9 @@ sh:
 prod:
 	docker run -u ${APPUSER} --rm -it -v "`pwd`:/app" -w /app ${IMG_TAG} sh -c "ng build --prod"
 
+debug:
+	docker run -u ${APPUSER} --rm -it -v "`pwd`:/app" -w /app ${IMG_TAG} sh -c "ng build"
+
+
 clean:
 	git clean -fxd

@@ -1,0 +1,23 @@
+version: '3'
+services:
+  client:
+    image: ngdev:latest
+    volumes:
+      - ./ui:/app
+    ports:
+      - 4200:4200
+    working_dir: /app
+    entrypoint: ng serve --host 0.0.0.0 --port 4200 --proxy-config proxy.conf.json
+
+  server:
+    image: golang:1.13-buster
+    volumes:
+      - .:/app
+      - $GOPATH:/go
+      - /tmp/go_docker_cache:/root/.cache
+    ports:
+      - 8080:8080
+    working_dir: /app
+    entrypoint: ./scripts/run.sh
+
+

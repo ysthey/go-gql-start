@@ -4,7 +4,6 @@
 
 export const environment = {
   production: false,
-  gqlserver: 'http://localhost:8080/gql'
 };
 
 /*
